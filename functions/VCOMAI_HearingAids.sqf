@@ -16,8 +16,7 @@ if ((diag_tickTime - _TimeShot) > 20) then
 		if ((_x distance _unit) < VCOM_HEARINGDISTANCE && !(_x getVariable "VCOMAI_ShotsFired") && (count ((group _Unit) call VCOMAI_Waypointcheck)) <= 0) then
 		{
 			_x setVariable ["VCOMAI_ShotsFired",true,true];
-			_kn = _x knowsAbout _unit;
-			_x reveal [_unit, _kn + 0.5];
+			_x reveal [_unit, 4];
 		};
 	} foreach _Array1;
 	
