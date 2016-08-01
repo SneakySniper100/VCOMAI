@@ -35,7 +35,7 @@ else
 		{
 			_GroupDudes = units (group _Unit);
 			_NearestEnemy = _Unit call VCOMAI_ClosestEnemy;
-			if (isNil "_NearestEnemy" || _NearestEnemy isEqualTo [0,0,0]) exitWith {};
+			if (isNil "_NearestEnemy" || _NearestEnemy isEqualTo [0,0,0]) then {_NearestEnemy = _WPPosition;};
 			_VCOM_MovedRecentlyRETURN = true;
 			_VCOM_MovedRecentlyCoverRETURN = true;
 			_VCOM_InCoverRETURN = true;		
@@ -88,9 +88,8 @@ else
 						{
 									_Unit forcespeed -1;
 									_Unit domove _CoverPos;
-									
 							//	};
-							sleep 5;		
+							sleep 3;		
 						};
 						//systemchat format ["MADE IT: %1",_Unit];
 						_Unit forcespeed 0;

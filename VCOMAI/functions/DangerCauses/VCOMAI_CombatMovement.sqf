@@ -61,4 +61,5 @@ private ["_Unit", "_VCOM_MovedRecently", "_VCOM_VisuallyCanSee", "_NearestEnemy"
 			_VCOM_VisuallyCanSee = false;
 			//_Unit spawn {sleep 10;if !(_Unit getVariable "VCOM_VisuallyCanSee") then {_Unit forceSpeed -1;};};
 	};
+	_Unit forcespeed -1;
 //};
