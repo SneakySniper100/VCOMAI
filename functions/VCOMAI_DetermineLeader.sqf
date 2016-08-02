@@ -15,4 +15,8 @@ _Leader = _VCOM_GroupLeader;
 if (isNil "_Leader") exitWith {};
 _SubLeader = _VCOM_SubLeader;
 _CheckArray = [_Leader,_SubLeader];
+
+//If leader is far away, lets regroup! YAY!
+if (_Leader distance _Unit > 60) then {_Unit forcespeed -1;};
+
 _CheckArray
