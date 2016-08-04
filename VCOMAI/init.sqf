@@ -98,6 +98,7 @@ VCOMAI_LoiterAction = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI
 VCOMAI_FragmentMove = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_FragmentMove.sqf";
 VCOMAI_FindCoverPos = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_FindCoverPos.sqf";
 VCOMAI_Waypointcheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_Waypointcheck.sqf";
+VCOMAI_WepSupCheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_WepSupCheck.sqf";
 VCOMAI_ForceHeal = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_ForceHeal.sqf";
 
 //Danger FSM

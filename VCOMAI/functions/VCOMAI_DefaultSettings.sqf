@@ -26,13 +26,15 @@ VCOM_GRENADECHANCE = 20;
 VCOM_MineLaying = true;
 //Chance of AI to lay a mine.
 VCOM_MineLayChance = 40;
+//AI will automatically disembark from vehicles when in combat.
+VCOM_AIDisembark = true;
 
 //The longer an AI's target stays in 1 location, the more accurate and aware of the target the AI becomes.DEFAULT = [WEST,EAST,CIVILIAN,RESISTANCE];
 VCOM_IncreasingAccuracy = true;
 //VCOM_SideBasedMovement- Remove sides from the array below to force that specific AI side to not execute any advance movement code. (I.E. Moving to reinforce allies, being alerted by distant gunshots and etc). AI with this will still react normally in combat. DEFAULT = [WEST,EAST,CIVILIAN,RESISTANCE];
-VCOM_SideBasedMovement = [WEST,EAST,CIVILIAN,RESISTANCE];
+VCOM_SideBasedMovement = [WEST,EAST,RESISTANCE];
 //VCOM_SideBasedExecution- Remove sides from the array below to remove that specific AI side from executing any of the VCOMAI scripts at all. DEFAULT = [WEST,EAST,CIVILIAN,RESISTANCE];
-VCOM_SideBasedExecution = [WEST,EAST,CIVILIAN,RESISTANCE];
+VCOM_SideBasedExecution = [WEST,EAST,RESISTANCE];
 //Distance AI will respond to call of help from each other
 VCOM_Unit_AIWarnDistance = 800;
 

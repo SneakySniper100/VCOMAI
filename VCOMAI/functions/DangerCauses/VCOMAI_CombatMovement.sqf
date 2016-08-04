@@ -1,3 +1,6 @@
+//Created on 8/14/14
+// Modified on : 8/3/16: Resolved AI getting stuck when no enemies existed, or enemies were far away.
+
 private ["_Unit", "_VCOM_MovedRecently", "_VCOM_VisuallyCanSee", "_NearestEnemy", "_intersections"];
 	
 	_Unit = _this select 0;
@@ -8,9 +11,8 @@ private ["_Unit", "_VCOM_MovedRecently", "_VCOM_VisuallyCanSee", "_NearestEnemy"
 	////systemchat format ["M %1",_Unit];	
 	_NearestEnemy = _Unit call VCOMAI_ClosestEnemy;
 	_DistanceCheck = _NearestEnemy distance _Unit;
-	
 	//if (isNil "_NearestEnemy" || {_VCOM_MovedRecentlyCover} || {(typeName _NearestEnemy isEqualTo "ARRAY")} || {isNil "_Unit"} || {!(alive _NearestEnemy)} || {(_NearestEnemy distance _Unit) > 5000}) exitWith {};
-	if (isNil "_NearestEnemy" || {(typeName _NearestEnemy isEqualTo "ARRAY")} || {isNil "_Unit"} || {!(alive _NearestEnemy)} || {(_DistanceCheck) > 2000}) exitWith {};
+	if (isNil "_NearestEnemy" || {(typeName _NearestEnemy isEqualTo "ARRAY")} || {isNil "_Unit"} || {!(alive _NearestEnemy)} || {(_DistanceCheck) > 2000}) exitWith {_Unit forcespeed -1;};
 	
 		_ReturnedFriendly = [units (group _Unit),_Unit] call VCOMAI_ClosestObject;
 		if (isNil "_ReturnedFriendly") then {_ReturnedFriendly = [0,0,0]};
@@ -23,6 +25,7 @@ private ["_Unit", "_VCOM_MovedRecently", "_VCOM_VisuallyCanSee", "_NearestEnemy"
 	//If the enemy is REALLY close, JUST OPEN FIRE!
 	//if ((count _intersections) isEqualTo 0 && ((_DistanceCheck) < 50)) exitwith 
 	
+
 
 	if (_cansee > 0 && {(_DistanceCheck) < 100}) exitwith 
 	{
