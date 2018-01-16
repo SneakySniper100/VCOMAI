@@ -1,0 +1,8 @@
+1)Place the folder "VCOMAI" and the file "init.sqf" inside your mission folder. These are located in the "PlaceInMissionFolder" folder.
+
+2)(Optional) Place the "userconfig" folder in your root ArmA 3 directory. This allows you to easily modify Vcom AI settings.
+!!!! IF YOU HAVE AN OLDER AI USERCONFIG FILE YOU ***MUST*** DELETE IT. OTHERWISE IT WILL CAUSE ISSUES.
+***IF YOU USE THE USERCONFIG FOLDER YOU MUST ENABLE "File-Patching" FOR THE SERVER TO ACCESS THESE SETTINGS. OTHERWISE VCOMAI WILL USE THE SCRIPT "VCOMAI_DefaultSettings" LOCATED IN THE "VCOMAI\Functions" FOLDER INSTEAD.
+***You can change ANY variable on the fly during a mission in your own custom scripts.
+
+3)Re-compile your mission and watch the AI do their thing.

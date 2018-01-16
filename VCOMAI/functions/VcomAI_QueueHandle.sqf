@@ -4,9 +4,9 @@ while {true} do
 	//systemchat format ["VcomAI_UnitQueue: %1",VcomAI_UnitQueue];
 	if !(VcomAI_UnitQueue isEqualTo []) then
 	{
-		_ConsideringUnit = VcomAI_UnitQueue select 0;
-		_Disabled = _ConsideringUnit getVariable ["NOAI",false];
-		if (_Disabled isEqualTo 1) then {_Disabled = true;_ConsideringUnit setvariable ["NOAI",true];};
+		private _ConsideringUnit = VcomAI_UnitQueue select 0;
+		private _Disabled = _ConsideringUnit getVariable ["VCOM_NOAI",false];
+		if ((vehicle _ConsideringUnit) isKindOf "Plane") then {_Disabled = true;_ConsideringUnit setvariable ["VCOM_NOAI",true];};
 		if (!(isNull _ConsideringUnit) && !(_Disabled)) then 
 		{
 			if (side _ConsideringUnit in VCOM_SideBasedExecution) then
