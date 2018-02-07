@@ -1,6 +1,6 @@
 _Unit = _this select 0;
 
-
+/*
 if (VCOM_AIDEBUG isEqualTo 1) then 
 {
 	[_Unit] spawn 
@@ -79,12 +79,13 @@ if (VCOM_AIDEBUG isEqualTo 1) then
 		MarkerArray = MarkerArray + [_arrow];
 	};
 };
+*/
 
 _Player = false;
 if (isPlayer _Unit) then {_Player = true;};
 
 //Determine if this AI should even execute new code
-_UseAI = _Unit getVariable "NOAI";
+_UseAI = _Unit getVariable ["VCOM_NOAI",false];
 if (isNil ("_UseAI")) then 
 {
 	_UseAI = false;

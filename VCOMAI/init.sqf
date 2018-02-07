@@ -6,19 +6,9 @@ if (isServer) then
 {
 	if (isFilePatchingEnabled) then
 	{
-		KK_fnc_fileExists = 
-		{
-			private ["_ctrl", "_fileExists"];
-			disableSerialization;
-			_ctrl = findDisplay 0 ctrlCreate ["RscHTML", -1];
-			_ctrl htmlLoad _this;
-			_fileExists = ctrlHTMLLoaded _ctrl;
-			ctrlDelete _ctrl;
-			_fileExists
-		};
+		private _Filecheck = loadFile "\userconfig\VCOM_AI\AISettingsV2.hpp";
 
-		_FileCheck = "\userconfig\VCOM_AI\AISettingsV2.hpp" call KK_fnc_fileExists;
-		if (_FileCheck) then
+		if !(_FileCheck isEqualTo "") then
 		{
 			VCOMAI_Func = compile preprocessFileLineNumbers "\userconfig\VCOM_AI\AISettingsV2.hpp";
 			[] call VCOMAI_Func;
@@ -52,7 +42,6 @@ VcomAI_UnitInit = compile preprocessFileLineNumbers "VCOMAI\Functions\VcomAI_Uni
 VCOMAI_DetermineLeader = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_DetermineLeader.sqf";
 VcomAI_QueueHandle = compile preprocessFileLineNumbers "VCOMAI\Functions\VcomAI_QueueHandle.sqf";
 VcomAI_DetermineRank = compile preprocessFileLineNumbers "VCOMAI\Functions\VcomAI_DetermineRank.sqf";
-VcomAI_DefaultSetup = compile preprocessFileLineNumbers "VCOMAI\Functions\VcomAI_DefaultSetup.sqf";
 VcomAI_FormationChange = compile preprocessFileLineNumbers "VCOMAI\Functions\VcomAI_FormationChange.sqf";
 VCOMAI_DriverCheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_DriverCheck.sqf";
 VCOMAI_ClosestAllyWarn = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_ClosestAllyWarn.sqf";
@@ -100,6 +89,15 @@ VCOMAI_FindCoverPos = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI
 VCOMAI_Waypointcheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_Waypointcheck.sqf";
 VCOMAI_WepSupCheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_WepSupCheck.sqf";
 VCOMAI_ForceHeal = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_ForceHeal.sqf";
+VCOMAI_DebugText = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_DebugText.sqf";
+VCOMAI_RearmSelf = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_RearmSelf.sqf";
+VCOMAI_RearmGo = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_RearmGo.sqf";
+VCOMAI_SuppressedEffect = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_SuppressedEffect.sqf";
+VCOMAI_IRCheck = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_IRCheck.sqf";
+VCOMAI_EditMenuInit = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOMAI_EditMenuInit.sqf";
+VCOM_PARAMSOPTIONS = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOM_PARAMSOPTIONS.sqf";
+dis_PARAMSLBChangedMM = compile preprocessFileLineNumbers "VCOMAI\Functions\dis_PARAMSLBChangedMM.sqf";
+VCOM_PARAMCHANGE = compile preprocessFileLineNumbers "VCOMAI\Functions\VCOM_PARAMCHANGE.sqf";
 
 //Danger FSM
 VCOMAI_RecentEnemyDetected = compile preprocessFileLineNumbers "VCOMAI\functions\DangerCauses\VCOMAI_RecentEnemyDetected.sqf";
@@ -111,13 +109,17 @@ VCOMAI_CombatMovement = compile preprocessFileLineNumbers "VCOMAI\functions\Dang
 VCOMAI_Explosiondetection = compile preprocessFileLineNumbers "VCOMAI\functions\DangerCauses\VCOMAI_Explosiondetection.sqf";
 VCOMAI_VehicleHandleDanger = compile preprocessFileLineNumbers "VCOMAI\functions\DangerCauses\VCOMAI_VehicleHandle.sqf";
 
+//Mod checks
+//ACE CHECK
+if (isClass(configFile >> "CfgPatches" >> "ace_main")) then {ACEACTIVATED = true;} else {ACEACTIVATED = false;};
 
 //Global actions compiles
 playMoveEverywhere = compileFinal "(_this select 0) playMoveNow (_this select 1);";
 switchMoveEverywhere = compileFinal "(_this select 0) switchMove (_this select 1);";
 playActionNowEverywhere = compileFinal "(_this select 0) playActionNow (_this select 1);";
 DisableCollisionALL = compileFinal "(_this select 0) disableCollisionWith player";
-
+3DText = compile "[_this select 0,_this select 1,_this select 2,_this select 3] call VCOMAI_DebugText;";
+PSup = compile "[] spawn VCOMAI_SuppressedEffect;";
 
 //Below is loop to check for new AI spawning in to be added to the list
 if !(isDedicated) then 
@@ -126,23 +128,34 @@ if !(isDedicated) then
 	waitUntil {!(isnull (findDisplay 46))};
 };
 
+
 //Lets gets the queue handler going
 [] spawn VcomAI_QueueHandle;
-
+[] spawn VCOMAI_EditMenuInit;
 
 VcomAI_UnitQueue = [];
 VcomAI_ActiveList = [];
+Vcom_ActivateAI = true;
+VCOM_CurrentlyMoving = 0;
+VCOM_CurrentlySuppressing = 0;
+VCOM_BasicCheckCurrent = 0;
+VCOM_LeaderExecuteCurrent = 0;
+
+
 while {true} do 
 {
+	if (Vcom_ActivateAI) then
 	{
-		if (local _x) then 
 		{
-				if (!(_x in VcomAI_ActiveList) && {!(_x in VcomAI_UnitQueue)}) then
-				{
-					VcomAI_UnitQueue pushback _x;
-				};
-		};
-	} forEach allUnits;
+			if (local _x && {simulationEnabled _x}) then 
+			{
+					if (!(_x in VcomAI_ActiveList) && {!(_x in VcomAI_UnitQueue)}) then
+					{
+						VcomAI_UnitQueue pushback _x;
+					};
+			};
+		} forEach allUnits;
+	};
 	sleep 10;
 };
 

@@ -5,7 +5,7 @@ VCOM_AIINGAMEMENU = false;
 //Variable for enabling/disabling skill changes for AI. True is on, False is off.
 VCOM_AISkillEnabled = true;
 //Variable for finding out which config was loaded.
-VCOM_AIConfig = "Mission Folder";
+VCOM_AIConfig = "Userconfig Folder";
 //Turn this on to see certain debug messages. 1 is on
 VCOM_AIDEBUG = 0;
 //Turn on map markers that track AI movement
@@ -42,7 +42,7 @@ VCOM_RainImpact = true;
 VCOM_RainPercent = 3;
 //Should AI and players have an additional layer of suppression that decreases aiming when suppressed? Default = true;
 VCOM_Suppression = false;
-//How much should suppression impact both AI and player aiming? Default is 5. Normal ArmA is 1.
+//How much should s3uppression impact both AI and player aiming? Default is 5. Normal ArmA is 1.
 VCOM_SuppressionVar = 5;
 //Should AI/players be impacted by adrenaline? This provides players and AI with a small speed boost to animations to assist with cover seeking and positioning for a short time. Default = true;
 VCOM_Adrenaline = true;
@@ -66,7 +66,6 @@ VCOM_VehicleUse = true;
 VCOM_IRLaser = true;
 //The distance, in meters, of how far AI will look for empty unlocked vehicles to steal.
 VCOM_AIDISTANCEVEHPATH = 150;
-
 //The longer an AI's target stays in 1 location, the more accurate and aware of the target the AI becomes.DEFAULT = [WEST,EAST,CIVILIAN,RESISTANCE];
 VCOM_IncreasingAccuracy = true;
 //VCOM_SideBasedMovement- Remove sides from the array below to force that specific AI side to not execute any advance movement code. (I.E. Moving to reinforce allies, being alerted by distant gunshots and etc). AI with this will still react normally in combat. DEFAULT = [WEST,EAST,CIVILIAN,RESISTANCE];
@@ -463,7 +462,7 @@ VCOM_AISKILL_EAST =
 };
 VCOM_AISKILL_RESISTANCE =
 {
-
+	/*
 	private _Endurance = _this skillFinal "Endurance";
 	private _aimingAccuracy = _this skillFinal "aimingAccuracy";
 	private _aimingShake = _this skillFinal "aimingShake";
@@ -498,6 +497,6 @@ VCOM_AISKILL_RESISTANCE =
 	_this setSkill ["general",(_reloadSpeed + _reloadSpeedSet)];
 	_this setSkill ["endurance",(_commanding + _commandingSet)];
 	_this setSkill ["reloadSpeed",(_general + _generalSet)];
-	
+	*/
 };
 };
