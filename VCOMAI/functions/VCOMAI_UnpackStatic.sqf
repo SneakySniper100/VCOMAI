@@ -1,37 +1,33 @@
-private ["_cansee","_position", "_Unit", "_weapon", "_leader", "_gunner", "_assistant", "_UnitGroups", "_CurrentBackPack", "_class", "_parents", "_rnd", "_dist", "_dir", "_positions", "_myNearestEnemy", "_StaticClassName", "_IsMortar", "_WeaponClassname", "_StaticCreated", "_dirTo"];_group = 		_this select 0;
-_position =		_this select 1;
-_Unit = _this select 2;
-_VCOM_HASDEPLOYED = _this select 3;
-_weapon = 		objNull;
-_leader = 		leader _group;
-_units = 		(units _group) - [leader _group];
-//_gunner = 		_units select 0;
-//_assistant = 	_units select 1;
+//This function provides the AI the ability to deploy static weapons, and then tells them when to pack the static weapon up.
+//Last edited on: 8/7/2017 @ 1925
 
-_group = group _Unit;
-_UnitGroups = units _group;
-_gunner = 0;
-_cansee = 1;
+//_SetDownStatic = [_Unit,_VCOM_HASDEPLOYED] spawn VCOMAI_UnpackStatic;
+params ["_Unit","_Vcom_HASDEPLOYED"];
 
-_CurrentBackPack = backpack _Unit;
+private _group = group _Unit;
 
+private _gunner = false;
+private _cansee = 1;
+
+private _CurrentBackPack = backpack _Unit;
+private _class = "";
 if (!(isNil "_CurrentBackPack")) then 
 {
-  _class = [_CurrentBackPack] call VCOMAI_Classvehicle;
+	_class = [_CurrentBackPack] call VCOMAI_Classvehicle;
   if (!(isNil "_class")) then 
   {
     _parents = [_class,true] call BIS_fnc_returnParents;
     if (!(isNil "_parents")) then 
     {
-      if (("StaticWeapon" in _parents) || {("Weapon_Bag_Base" in _parents)}) then {_Unit setVariable ["USEDSTATICWEAP",_CurrentBackPack,false];_gunner = _Unit;};
+      if (("StaticWeapon" in _parents) || {("Weapon_Bag_Base" in _parents)}) then {_Unit setVariable ["VCOM_USEDSTATICWEAP",_CurrentBackPack,false];_gunner = true;};
     };
   };
 };
 
 
-if (_gunner isEqualTo 0) exitWith {};
+if !(_gunner) exitWith {};
 
-_myNearestEnemy = _Unit findNearestEnemy (getPosASL _Unit);
+private _myNearestEnemy = _Unit findNearestEnemy (getPosASL _Unit);
 //_myNearestEnemy = player;
 
 
@@ -46,33 +42,29 @@ if (_myNearestEnemy isEqualTo []) exitWith {};
 sleep 0.25;
 //_assistant action ["PutBag",_assistant];
 
-	_StaticClassName = _Unit getVariable "VCOM_StaticClassName";
-	
-	_IsMortar = ["Mortar",_StaticClassName,false] call BIS_fnc_inString;
+	private _Vcom_Indoor = false;
+
+	//If the unit is in a building, or can see the enemy, we don't want them deploying mortars.
+	private _cansee = [_Unit, "VIEW"] checkVisibility [eyePos _Unit, eyePos _myNearestEnemy];		
+	private _Position = getposATL _Unit;
+	private _Array = lineIntersectsObjs [_Position,[_Position select 0,_Position select 1,(_Position select 2) + 10], objnull, objnull, true, 4];
+	{
+		if (_x isKindof "Building") exitWith {_Vcom_Indoor = true;};
+	} foreach _Array;
+
+	if (!(_cansee > 0) || (_Vcom_Indoor)) exitwith {};	
 
 	
-	if (["grn",_StaticClassName,false] call BIS_fnc_inString) then
-	{
-		_WeaponClassname = [_StaticClassName,0,-13] call BIS_fnc_trimString;
-	}
-	else
-	{
-		_WeaponClassname = [_StaticClassName,0,-9] call BIS_fnc_trimString;	
-	};
+	//Get assemble to information
+	private _AssembledG = getText (configfile >> "CfgVehicles" >> _class >> "assembleInfo" >> "assembleTo");	
 	
 	
-	if !(_IsMortar) then 
-	{
-		_WeaponClassname = _WeaponClassname + "_high_F";
-		_cansee = [_Unit, "VIEW"] checkVisibility [eyePos _Unit, eyePos _myNearestEnemy];		
-	} 
-	else 
-	{
-		_WeaponClassname = _WeaponClassname + "_F";
-	};
-
-	if !(_cansee > 0) exitwith {};	
-	_StaticCreated = _WeaponClassname createvehicle [0,0,0];
+	//Play an animation to telegraph creation of a static
+	[_Unit,"AinvPknlMstpSnonWnonDnon_Putdown_AmovPknlMstpSnonWnonDnon"] remoteExec ["playMoveEverywhere",0];
+	sleep 5;
+	
+	//Create the static weapon
+	_StaticCreated = _AssembledG createvehicle [0,0,0];
 	_StaticCreated setposATL (getposATL _Unit);
 	
   _weapon = nearestObject [_position,"StaticWeapon"];

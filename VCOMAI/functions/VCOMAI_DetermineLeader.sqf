@@ -2,7 +2,7 @@
 // Modified on : 8/1/15 - 8/3/16: Added in check for unit and distance from leader.
 
 //This function is to determine if this unit is the group leader or not. And to define if unit is sub-leader or not.
-_Unit = _this select 0;
+_Unit = _this;
 
 _GroupLeader = leader (group (vehicle _Unit)); 
 if (_GroupLeader isEqualTo _Unit) then {_VCOM_GroupLeader = true;} else {_VCOM_GroupLeader = false;};
