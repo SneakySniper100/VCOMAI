@@ -41,7 +41,8 @@ _GroupUnits = units _group;
 			private _WaypointIs = waypointType [_group,_index];			
 			while {_WaypointIs isEqualTo "HOLD"} do
 			{
-				waitUntil {_unit distance _BuildingLocation < 1.3};
+				waitUntil {!alive _unit OR {_unit distance _BuildingLocation < 1.3}};
+				if(!alive _unit) exitWith {};
 				_unit disableAI "PATH";
 				sleep (30 + (random 60));
 				_unit enableAI "PATH";

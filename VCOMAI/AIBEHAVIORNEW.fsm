@@ -1,4 +1,4 @@
-/*%FSM<COMPILE "C:\Program Files (x86)\Steam\steamapps\common\Arma 3 Tools\FSMEditor\scriptedFSM.cfg, AIBEHAVIORNEW">*/
+/*%FSM<COMPILE "scriptedFSM.cfg, AIBEHAVIORNEW">*/
 /*%FSM<HEAD>*/
 /*
 item0[] = {"Begin_State",0,250,27.230743,699.276978,117.230728,749.276978,0.000000,"Begin State"};
@@ -137,7 +137,7 @@ item132[] = {"Dead_1",4,218,-925.000000,-1475.000000,-875.000000,-1425.000000,10
 item133[] = {"Exit_8",1,250,-925.000000,-1375.000000,-875.000000,-1325.000000,0.000000,"Exit"};
 item134[] = {"Get_In_Static",2,250,75.000000,-2700.000000,175.000000,-2650.000000,0.000000,"Get In Static"};
 item135[] = {"Arm_Static_Weapo",4,218,1018.250000,-1036.230469,1118.250000,-986.230713,45.000000,"Arm Static Weapon"};
-item136[] = {"Get_In_Static_1",2,4346,1258.157104,-1225.000000,1358.157104,-1175.000000,0.000000,"Get In Static"};
+item136[] = {"Get_In_Static_1",2,250,1258.157104,-1225.000000,1358.157104,-1175.000000,0.000000,"Get In Static"};
 item137[] = {"Arm_Static_Weapo",4,218,-35.498486,-2428.519775,64.501526,-2378.519775,40.000000,"Arm Static Weapon"};
 item138[] = {"MinePlant",4,218,1100.000000,-1000.000000,1200.000000,-950.000000,55.000000,"MinePlant"};
 item139[] = {"PlaceMine",2,250,1275.000000,-1175.000000,1375.000000,-1125.000000,0.000000,"PlaceMine"};
@@ -200,7 +200,7 @@ item195[] = {"Simulation_Pause",4,218,-485.473785,79.880402,-385.473785,129.8804
 item196[] = {"Simulation_Pause",2,250,-607.570007,165.046722,-517.569946,215.046677,0.000000,"Simulation Pause"};
 item197[] = {"Simulation_Pause",4,218,-462.449554,189.586151,-362.449585,239.585999,1005.000000,"Simulation Pause"};
 item198[] = {"Wait",4,218,-737.011047,165.630585,-637.010803,215.630661,0.000000,"Wait"};
-item199[] = {"Enemy_Delay",4,218,225.032883,-504.055328,315.032654,-454.055298,900.000000,"Enemy Delay"};
+item199[] = {"Enemy_Delay",4,4314,225.032883,-504.055328,315.032654,-454.055298,900.000000,"Enemy Delay"};
 item200[] = {"Temp_Halt",2,250,362.429901,-560.118835,452.429901,-510.118774,0.000000,"Temp Halt"};
 item201[] = {"Enable_AI",4,218,253.191132,-411.323303,343.191376,-361.323181,15.000000,"Enable AI"};
 item202[] = {"Wait",4,218,352.274658,-642.762512,452.274902,-592.762451,0.000000,"Wait"};
@@ -471,22 +471,23 @@ link260[] = {196,198};
 link261[] = {197,20};
 link262[] = {198,196};
 link263[] = {199,200};
-link264[] = {200,201};
-link265[] = {200,202};
-link266[] = {201,20};
-link267[] = {202,200};
-link268[] = {203,204};
-link269[] = {204,154};
-link270[] = {204,168};
-link271[] = {204,169};
-link272[] = {204,170};
-link273[] = {204,171};
-link274[] = {204,172};
-link275[] = {204,187};
-link276[] = {204,205};
-link277[] = {205,20};
-globals[] = {0.000000,0,0,0,0,640,480,2,543,6316128,1,482.744873,1979.010742,-58.985474,-1289.834839,964,793,1};
-window[] = {0,-1,-1,-1,-1,1035,78,1866,78,1,982};
+link264[] = {200,24};
+link265[] = {200,201};
+link266[] = {200,202};
+link267[] = {201,20};
+link268[] = {202,200};
+link269[] = {203,204};
+link270[] = {204,154};
+link271[] = {204,168};
+link272[] = {204,169};
+link273[] = {204,170};
+link274[] = {204,171};
+link275[] = {204,172};
+link276[] = {204,187};
+link277[] = {204,205};
+link278[] = {205,20};
+globals[] = {0.000000,0,0,0,0,640,480,2,543,6316128,1,-504.476563,911.084167,42.584351,-1111.596924,964,786,1};
+window[] = {0,-1,-1,-1,-1,1007,66,1854,50,1,982};
 *//*%FSM</HEAD>*/
 class FSM
 {
@@ -996,7 +997,9 @@ class FSM
                                         to="Temp_Halt";
                                         precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
                                         condition=/*%FSM<CONDITION""">*/"diag_fps < VCOM_FPSFreeze || {(_MyNearestEnemy distance _Unit > VCOM_DisableDistance) && !((behaviour _Unit) isEqualTo ""COMBAT"")}"/*%FSM</CONDITION""">*/;
-                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                        action=/*%FSM<ACTION""">*/"_Unit doMove getPos _Unit;" \n
+                                         "_Unit forceSpeed -1;" \n
+                                         ""/*%FSM</ACTION""">*/;
                                 };
                                 /*%FSM</LINK>*/
                                 /*%FSM<LINK "Check_Turn">*/
@@ -3421,6 +3424,17 @@ class FSM
                         precondition = /*%FSM<STATEPRECONDITION""">*/""/*%FSM</STATEPRECONDITION""">*/;
                         class Links
                         {
+                                /*%FSM<LINK "Dead">*/
+                                class Dead
+                                {
+                                        itemno = 24;
+                                        priority = 55.000000;
+                                        to="Dead_Captain";
+                                        precondition = /*%FSM<CONDPRECONDITION""">*/""/*%FSM</CONDPRECONDITION""">*/;
+                                        condition=/*%FSM<CONDITION""">*/"!alive _Unit || {isNull _Unit} || {isPlayer _Unit} || {isNil (""_Leader"")}"/*%FSM</CONDITION""">*/;
+                                        action=/*%FSM<ACTION""">*/""/*%FSM</ACTION""">*/;
+                                };
+                                /*%FSM</LINK>*/
                                 /*%FSM<LINK "Enable_AI">*/
                                 class Enable_AI
                                 {

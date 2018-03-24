@@ -5,8 +5,8 @@ if !((vehicle _Unit) isEqualTo _Unit) exitWith {};
 
 waitUntil {VCOM_CurrentlyMoving < VCOM_CurrentlyMovingLimit};
 
-	VCOM_CurrentlyMoving = VCOM_CurrentlyMoving + 1;
-	
+VCOM_CurrentlyMoving = VCOM_CurrentlyMoving + 1;
+call {
 	_VCOM_MovedRecentlyCover = _this select 1;
 	_VCOM_GRENADETHROWN = _this select 2;
 	_VCOM_InCover = _this select 3;
@@ -15,7 +15,7 @@ waitUntil {VCOM_CurrentlyMoving < VCOM_CurrentlyMovingLimit};
 	//Let's find the nearest enemy to his unit.
 	_NearestEnemy = _Unit call VCOMAI_ClosestEnemy;
 	_DistanceCheck = _NearestEnemy distance _Unit;
-	if (isNil "_NearestEnemy" || {(typeName _NearestEnemy isEqualTo "ARRAY")} || {isNil "_Unit"} || {!(alive _NearestEnemy)} || {(_DistanceCheck) > 2000}) exitWith {_Unit forcespeed -1;VCOM_CurrentlyMoving = VCOM_CurrentlyMoving - 1;};
+	if (isNil "_NearestEnemy" || {(typeName _NearestEnemy isEqualTo "ARRAY")} || {!alive _Unit} || {!(alive _NearestEnemy)} || {(_DistanceCheck) > 2000}) exitWith {_Unit forcespeed -1;};
 	
 	
 	
@@ -69,4 +69,5 @@ waitUntil {VCOM_CurrentlyMoving < VCOM_CurrentlyMovingLimit};
 	{
 		_Unit doMove _MoveToPos;
 	};
-	VCOM_CurrentlyMoving = VCOM_CurrentlyMoving - 1;
+};
+VCOM_CurrentlyMoving = VCOM_CurrentlyMoving - 1;
