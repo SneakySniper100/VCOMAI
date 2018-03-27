@@ -15,7 +15,7 @@ _Unit = _this;
     while {_Waiting isEqualTo 0} do
     {
     sleep 1;
-      if ((_Unit distance _Weapon) < 3) then {_Waiting = 1};
+      if (!alive _Unit OR {(_Unit distance _Weapon) < 3}) then {_Waiting = 1};
     };
     _Unit moveInGunner _weapon;
   };
